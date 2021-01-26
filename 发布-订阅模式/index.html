@@ -1,0 +1,159 @@
+<!--
+ * @Author: your name
+ * @Date: 2021-01-26 13:33:43
+ * @LastEditTime: 2021-01-26 13:57:00
+ * @LastEditors: Please set LastEditors
+ * @Description: In User Settings Edit
+ * @FilePath: /Design-Patterns/发布-订阅模式/index.html
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+    <script>
+        /**
+         * @description: 定义发布者类
+         * @param {*}
+         * @return {*}
+         */        
+        class Publisher {
+            constructor() {
+                this.observers = [];
+                console.log('发布者创建了');
+            }
+
+            /**
+             * @description: 增加订阅者
+             * @param {*} add
+             * @return {*}
+             */            
+            add = (observer) => {
+                this.observers.push(observer);
+                console.log(`添加了订阅者: ${observer}`);
+            }
+
+            /**
+             * @description: 移除订阅者
+             * @param {*} remove
+             * @return {*}
+             */            
+            remove = (observer) => {
+                for (let i = 0, len = this.observers.length; i < len; i++) {
+                    if (this.observers[i] === observer) {
+                        this.observers.splice(i, 1);
+                        return;
+                    }
+                }
+                console.log(`移除了订阅者: ${observer}`);
+            }
+
+            /**
+             * @description: 通知所有订阅者
+             * @param {*} notify
+             * @return {*}
+             */            
+            notify = () => {
+                console.log('通知所有订阅者');
+                this.observers.forEach((observer) => {
+                    observer.update(this);
+                })
+            }
+        }
+
+        /**
+         * @description: 定义订阅者类
+         * @param {*}
+         * @return {*}
+         */        
+        class Observer {
+            constructor() {
+                console.log('订阅者创建了');
+            }
+
+            update = () => {
+                console.log('observer.update 调用了');
+            }
+        }
+
+        /**
+         * @description: 定义一个具体的需求文档发布类
+         * @param {*}
+         * @return {*}
+         */        
+        class PrdPublisher extends Publisher {
+            constructor() {
+                super();
+                this.prd = null;
+            }
+
+            /**
+             * @description: 获取当前的 prd
+             * @param {*} getPrd
+             * @return {*}
+             */            
+            getPrd = () => {
+                console.log('获取 prd');
+                return this.prd;
+            }
+
+            setPrd = (prd) => {
+                console.log(`更新 prd: ${prd}`)
+                this.prd = prd;
+                this.notify();
+            }
+        }
+
+        /**
+         * @description: 定义一个具体的开发订阅者
+         * @param {*}
+         * @return {*}
+         */        
+        class DevloperObserver extends Observer {
+            constructor() {
+                super();
+                this.prd = {};
+            }
+
+            /**
+             * @description: 重写一个具体的 update 函数
+             * @param {*} update
+             * @return {*}
+             */            
+            update = (publisher) => {
+                this.prd = publisher.getPrd();
+                this.work()
+            }
+
+            work = () => {
+                const prd = this.prd;
+                console.log('开始搬砖');
+            }
+        }
+
+        // 创建前端开发 LiLei, 后端开发 A, 测试 B
+        const LiLei = new DevloperObserver();
+        const A = new DevloperObserver();
+        const B = new DevloperObserver();
+
+        // 创建产品 HanMeimei
+        const HanMeimei = new PrdPublisher();
+
+        const prd = {
+            name: '测试'
+        };
+
+        // 韩梅梅开始拉群
+        HanMeimei.add(LiLei);
+        HanMeimei.add(A);
+        HanMeimei.add(B);
+
+        // 韩梅梅发送了需求文档, 并 @ 了所有人
+        HanMeimei.setPrd(prd);
+    </script>
+</body>
+</html>
