@@ -1,0 +1,41 @@
+<!--
+ * @Author: your name
+ * @Date: 2021-01-27 13:33:13
+ * @LastEditTime: 2021-01-27 13:37:20
+ * @LastEditors: Please set LastEditors
+ * @Description: In User Settings Edit
+ * @FilePath: /Design-Patterns/单例模式/index.html
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        class Storage {
+            static getInstance = () => {
+                if (!Storage.instance) {
+                    Storage.instance = new Storage();
+                }
+                return Storage.instance;
+            }
+
+            getItem = (key) => {
+                return localStorage.getItem(key)
+            }
+
+            setItem = (key, value) => {
+                return localStorage.setItem(key, value)
+            }
+        }
+
+        const storage1 = Storage.getInstance();
+        const storage2 = Storage.getInstance();
+
+        console.log(storage1 === storage2)
+    </script>
+</body>
+</html>

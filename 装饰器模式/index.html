@@ -1,0 +1,39 @@
+<!--
+ * @Author: your name
+ * @Date: 2021-01-27 18:42:34
+ * @LastEditTime: 2021-01-27 18:46:05
+ * @LastEditors: Please set LastEditors
+ * @Description: In User Settings Edit
+ * @FilePath: /Design-Patterns/装饰器模式/index.html
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        function funcDecorator(target, name, descriptor) {
+            const originalMethod = descriptor.value;
+            descriptor.value = () => {
+                console.log('我是装饰器逻辑');
+                return originalMethod.apply(this, arguments);
+            }
+
+            return descriptor;
+        }
+
+        class Button {
+            @funcDecorator
+            onClick = () => {
+                console.log('我是原有逻辑');
+            }
+        }
+
+        const btn = new Button();
+        btn.onClick();
+    </script>
+</body>
+</html>
